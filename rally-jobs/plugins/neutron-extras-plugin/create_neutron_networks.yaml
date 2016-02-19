@@ -1,0 +1,23 @@
+{% set rps_scalability = 0 %}
+{% set times_scalability = 0 %}
+{% set sla_scalability = 0 %}
+---
+  NetworkPlugin.create_networks:
+    -
+      args:
+        network_create_args: {}
+      runner:
+        type: "rps"
+        times: {{times_scalability or 100}}
+        rps: {{rps_scalability or 1}}
+      context:
+        users:
+          tenants: 1
+          users_per_tenant: 1
+        quotas:
+          neutron:
+            network: -1
+      sla:
+        max_seconds_per_iteration: {{sla_scalability or 5}}
+        failure_rate:
+          max: 1

@@ -1,0 +1,31 @@
+{% set rps_scalability = 0 %}
+{% set times_scalability = 0 %}
+{% set sla_scalability = 0 %}
+---
+  NetworkPlugin.create_subnets_routers_interfaces:
+    -
+      args:
+        network_create_args: {}
+        subnet_create_args: {}
+        subnet_cidr_start: "1.0.0.0/24"
+        subnets_per_network: 1
+        router_create_args: {}
+      runner:
+        type: "rps"
+        times: {{times_scalability or 100}}
+        rps: {{rps_scalability or 1}}
+      context:
+        network:
+           "start_cidr": "10.0.0.0/8"
+        users:
+          tenants: 1
+          users_per_tenant: 1
+        quotas:
+          neutron:
+             network: -1
+             subnet: -1
+             router: -1
+      sla:
+        max_seconds_per_iteration: {{sla_scalability or 7}}
+        failure_rate:
+          max: 1

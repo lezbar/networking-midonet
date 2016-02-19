@@ -1,0 +1,28 @@
+{% set rps_scalability = 0 %}
+{% set times_scalability = 0 %}
+{% set sla_scalability = 0 %}
+---
+  NetworkPlugin.create_ports:
+    -
+      args:
+        network_create_args: {}
+        port_create_args: {}
+        ports_per_network: 1
+      runner:
+        type: "rps"
+        times: {{times_scalability or 100}}
+        rps: {{rps_scalability or 1}}
+      context:
+        network:
+          "start_cidr": "10.0.0.0/8"
+        users:
+          tenants: 1
+          users_per_tenant: 1
+        quotas:
+          neutron:
+            network: -1
+            port: -1
+      sla:
+        max_seconds_per_iteration: {{sla_scalability or 5}}
+        failure_rate:
+          max: 1
