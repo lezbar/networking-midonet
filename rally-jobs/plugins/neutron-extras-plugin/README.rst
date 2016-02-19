@@ -6,7 +6,7 @@ code base benchmarks allows create_delete/list/update operations only.
 
 Copy this directory in "~/.rally" to be automatically discovered by Rally.
 
-Set the following variables in the create_*.yaml jobs to override the defaults.
+Set the following variables in the create_*.yaml jobs to override the defaults.::
 
     {% set rps_scalability = 0 %}
     {% set times_scalability = 0 %}
